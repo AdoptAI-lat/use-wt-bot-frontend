@@ -134,3 +134,11 @@ streamlitDoc.addEventListener('keydown', function(e) {
     height=0,
     width=0,
 )
+
+
+footer_text = """
+<div class="footer">
+    <p>Disclaimer: Sistema únicamente de prueba para uso interno y las respuestas pueden no ser correctas.</p>
+</div>
+"""
+st.markdown(footer_text, unsafe_allow_html=True)

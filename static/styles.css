@@ -19,6 +19,7 @@
 .ai-bubble {
     background: rgb(240, 242, 246);
     border-radius: 10px;
+    color:darkslategray
 }
 
 .human-bubble {
@@ -30,3 +31,18 @@
 .chat-icon {
     border-radius: 5px;
 }
+
+.footer {
+    position:fixed;
+    left:0px;
+    bottom:0px;
+    height:60px;
+    width:100%;
+    background:#999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+ }
