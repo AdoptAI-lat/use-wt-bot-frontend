@@ -20,7 +20,7 @@ class Message:
     message: str
 
 
-def get_chat_response(question, chat_history = None, global_counter = 0):
+def get_chat_response(question, chat_history = None, error_handler = None):
     url = f'{st.secrets["host_microservice"]}/api/ms/use-wt-bot/chat'
     headers = {
         'api-key-use': st.secrets["ms_api_key"],
@@ -31,7 +31,7 @@ def get_chat_response(question, chat_history = None, global_counter = 0):
         payload = json.dumps({
             "question": question,
             "chat_history": chat_history,
-            "global_counter": global_counter
+            "error_handler": error_handler
         })
     else:
         payload = json.dumps({
@@ -40,7 +40,7 @@ def get_chat_response(question, chat_history = None, global_counter = 0):
     response = requests.post(url, headers=headers, data=payload)
     print(f"microservice status code: {response.status_code}")
     data = response.json()
-    return data['chat_response'], data['chat_history'], data['global_counter']
+    return data['chat_response'], data['chat_history'], data['error_handler']
 
 
 def load_css():
@@ -54,12 +54,12 @@ def initialize_session_state():
         st.session_state.history = []
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = None
-        st.session_state.global_counter = 0
+        st.session_state.error_handler = None
 
 
 def on_click_callback():
     human_prompt = st.session_state.human_prompt
-    llm_response, chat_history, global_counter = get_chat_response(human_prompt, st.session_state.chat_history, st.session_state.global_counter)
+    llm_response, chat_history, error_handler = get_chat_response(human_prompt, st.session_state.chat_history, st.session_state.error_handler)
     st.session_state.history.append(
         Message("human", human_prompt)
     )
@@ -67,7 +67,7 @@ def on_click_callback():
         Message("ai", llm_response)
     )
     st.session_state.chat_history = chat_history
-    st.session_state.global_counter = global_counter
+    st.session_state.error_handler = error_handler
     st.session_state.human_prompt = ""
 
 
